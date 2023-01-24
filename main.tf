@@ -1,0 +1,177 @@
+module "node_exporter_definition" {
+  source  = "cloudposse/ecs-container-definition/aws"
+  version = "0.58.1"
+
+  interactive              = false
+  readonly_root_filesystem = true
+  container_name           = "node-exporter"
+  container_image          = "quay.io/prometheus/node-exporter:${var.node_exporter_version}"
+  mount_points = [
+    {
+      containerPath = "/host"
+      sourceVolume  = "root"
+      readOnly      = true
+    }
+  ]
+  command = [
+    "--path.rootfs=/host"
+  ]
+  container_memory_reservation = var.container_memory_reservation
+  container_cpu                = var.node_exporter_cpu
+  map_environment              = var.environment_variables
+  log_configuration = {
+    logDriver = "awslogs"
+    options = {
+      awslogs-group         = aws_cloudwatch_log_group.node_exporter.name
+      awslogs-region        = var.aws_region
+      awslogs-stream-prefix = "ecs"
+    }
+  }
+}
+
+module "cadvisor_definition" {
+  source  = "cloudposse/ecs-container-definition/aws"
+  version = "0.58.1"
+
+  interactive              = false
+  readonly_root_filesystem = true
+  container_name           = "cadvisor"
+  container_image          = "gcr.io/cadvisor/cadvisor:${var.cadvisor_version}"
+  mount_points = [
+    {
+      containerPath = "/sys/fs/cgroup"
+      sourceVolume  = "cgroup"
+      readOnly      = true
+    },
+    {
+      containerPath = "/rootfs"
+      sourceVolume  = "root"
+      readOnly      = true
+    },
+    {
+      containerPath = "/var/run"
+      sourceVolume  = "var_run"
+      readOnly      = false
+    },
+    {
+      containerPath = "/sys"
+      sourceVolume  = "sys"
+      readOnly      = true
+    },
+    {
+      containerPath = "/var/lib/docker"
+      sourceVolume  = "var_lib_docker"
+      readOnly      = true
+    },
+    {
+      containerPath = "/dev/disk"
+      sourceVolume  = "dev_disk"
+      readOnly      = true
+    }
+  ]
+  privileged = true
+  linux_parameters = {
+    capabilities = {
+      add  = null
+      drop = null
+    }
+    devices = [
+      {
+        containerPath = null
+        hostPath      = "/dev/kmsg"
+        permissions   = ["read"]
+      }
+    ]
+    initProcessEnabled = null
+    maxSwap            = null
+    sharedMemorySize   = null
+    swappiness         = null
+    tmpfs              = []
+  }
+  command = [
+    "--port=8001",
+    "--store_container_labels=false",
+    "--enable_load_reader=true",
+    "--whitelisted_container_labels=com.amazonaws.ecs.cluster,com.amazonaws.ecs.task-definition-family,com.amazonaws.ecs.container-name",
+    "--docker_only=true",
+    "--disable_metrics=advtcp,cpuset,cpu_topology,disk,hugetlb,memory_numa,process,referenced_memory,resctrl,sched,tcp,udp",
+    "--housekeeping_interval=2s"
+  ]
+  container_cpu                = var.cadvisor_cpu
+  container_memory_reservation = var.container_memory_reservation
+  map_environment = merge(
+    var.environment_variables,
+    {
+      CADVISOR_HEALTHCHECK_URL = "http://localhost:8001/healthz"
+    }
+  )
+  log_configuration = {
+    logDriver = "awslogs"
+    options = {
+      awslogs-group         = join("", aws_cloudwatch_log_group.cadvisor[*].name)
+      awslogs-region        = var.aws_region
+      awslogs-stream-prefix = "ecs"
+    }
+  }
+}
+
+resource "aws_cloudwatch_log_group" "node_exporter" {
+  name              = "${module.this.id}-node-exporter"
+  tags              = module.this.tags
+  retention_in_days = var.log_retention_in_days
+}
+
+resource "aws_cloudwatch_log_group" "cadvisor" {
+  name              = "${module.this.id}-cadvisor"
+  tags              = module.this.tags
+  retention_in_days = var.log_retention_in_days
+}
+
+module "ecs_service_task" {
+  source  = "cloudposse/ecs-alb-service-task/aws"
+  version = "0.64.1"
+
+  container_definition_json = "[${join("", module.node_exporter_definition[*].json_map_encoded)},${module.cadvisor_definition.json_map_encoded}]"
+  ecs_cluster_arn           = var.ecs_cluster_arn
+  launch_type               = "EC2"
+  scheduling_strategy       = "DAEMON"
+  task_cpu                  = var.task_cpu
+  task_memory               = var.task_memory
+  network_mode              = "host"
+  docker_volumes = [
+    {
+      host_path                   = "/"
+      name                        = "root"
+      docker_volume_configuration = []
+    },
+    {
+      host_path                   = "/var/run"
+      name                        = "var_run"
+      docker_volume_configuration = []
+    },
+    {
+      host_path                   = "/sys"
+      name                        = "sys"
+      docker_volume_configuration = []
+    },
+    {
+      host_path                   = "/var/lib/docker"
+      name                        = "var_lib_docker"
+      docker_volume_configuration = []
+    },
+    {
+      host_path                   = "/dev/disk"
+      name                        = "dev_disk"
+      docker_volume_configuration = []
+    },
+    {
+      host_path                   = "/sys/fs/cgroup"
+      name                        = "cgroup"
+      docker_volume_configuration = []
+    }
+  ]
+  subnet_ids     = var.subnet_ids
+  vpc_id         = var.vpc_id
+  propagate_tags = "SERVICE"
+  context        = module.this.context
+}
