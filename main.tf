@@ -1,3 +1,35 @@
+module "cadvisor_label" {
+  source  = "cloudposse/label/null"
+  version = "0.25.0"
+
+  attributes  = ["cadvisor"]
+  label_order = var.label_orders.cloudwatch
+
+  context = module.this.context
+}
+
+module "node_exporter_label" {
+  source  = "cloudposse/label/null"
+  version = "0.25.0"
+
+  attributes  = ["node-exporter"]
+  label_order = var.label_orders.cloudwatch
+
+  context = module.this.context
+}
+
+resource "aws_cloudwatch_log_group" "node_exporter" {
+  name              = module.node_exporter_label.id
+  tags              = module.node_exporter_label.tags
+  retention_in_days = var.log_retention_in_days
+}
+
+resource "aws_cloudwatch_log_group" "cadvisor" {
+  name              = module.cadvisor_label.id
+  tags              = module.cadvisor_label.tags
+  retention_in_days = var.log_retention_in_days
+}
+
 module "node_exporter_definition" {
   source  = "cloudposse/ecs-container-definition/aws"
   version = "0.58.1"
@@ -115,21 +147,9 @@ module "cadvisor_definition" {
   }
 }
 
-resource "aws_cloudwatch_log_group" "node_exporter" {
-  name              = "${module.this.id}-node-exporter"
-  tags              = module.this.tags
-  retention_in_days = var.log_retention_in_days
-}
-
-resource "aws_cloudwatch_log_group" "cadvisor" {
-  name              = "${module.this.id}-cadvisor"
-  tags              = module.this.tags
-  retention_in_days = var.log_retention_in_days
-}
-
 module "ecs_service_task" {
-  source  = "cloudposse/ecs-alb-service-task/aws"
-  version = "0.64.1"
+  source  = "justtrackio/ecs-alb-service-task/aws"
+  version = "1.0.0"
 
   container_definition_json = "[${join("", module.node_exporter_definition[*].json_map_encoded)},${module.cadvisor_definition.json_map_encoded}]"
   ecs_cluster_arn           = var.ecs_cluster_arn
@@ -173,5 +193,7 @@ module "ecs_service_task" {
   subnet_ids     = var.subnet_ids
   vpc_id         = var.vpc_id
   propagate_tags = "SERVICE"
-  context        = module.this.context
+
+  label_orders = var.label_orders
+  context      = module.this.context
 }
