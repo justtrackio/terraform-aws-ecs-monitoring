@@ -9,7 +9,7 @@ data "aws_ecs_cluster" "default" {
 }
 
 module "ecs_monitoring" {
-  source          = "../"
+  source          = "../.."
   stage           = "ecs"
   name            = "monitoring"
   ecs_cluster_arn = data.aws_ecs_cluster.default.arn

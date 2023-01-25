@@ -140,7 +140,7 @@ module "cadvisor_definition" {
   log_configuration = {
     logDriver = "awslogs"
     options = {
-      awslogs-group         = join("", aws_cloudwatch_log_group.cadvisor[*].name)
+      awslogs-group         = aws_cloudwatch_log_group.cadvisor.name
       awslogs-region        = var.aws_region
       awslogs-stream-prefix = "ecs"
     }
@@ -151,7 +151,7 @@ module "ecs_service_task" {
   source  = "justtrackio/ecs-alb-service-task/aws"
   version = "1.0.0"
 
-  container_definition_json = "[${join("", module.node_exporter_definition[*].json_map_encoded)},${module.cadvisor_definition.json_map_encoded}]"
+  container_definition_json = "[${module.node_exporter_definition.json_map_encoded},${module.cadvisor_definition.json_map_encoded}]"
   ecs_cluster_arn           = var.ecs_cluster_arn
   launch_type               = "EC2"
   scheduling_strategy       = "DAEMON"
@@ -190,7 +190,6 @@ module "ecs_service_task" {
       docker_volume_configuration = []
     }
   ]
-  subnet_ids     = var.subnet_ids
   vpc_id         = var.vpc_id
   propagate_tags = "SERVICE"
 

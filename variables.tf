@@ -1,7 +1,7 @@
 variable "aws_region" {
   type        = string
   description = "AWS Region"
-  default     = "eu-central-1"
+  default     = null
 }
 
 variable "node_exporter_version" {
@@ -63,12 +63,6 @@ variable "ecs_cluster_arn" {
   description = "ECS cluster ARN where this service will be deployed"
 }
 
-variable "subnet_ids" {
-  type        = list(string)
-  description = "Subnet IDs used in Service `network_configuration` if `var.network_mode = \"awsvpc\"`"
-  default     = null
-}
-
 variable "vpc_id" {
   type        = string
   description = "The VPC ID where resources are created"
@@ -77,7 +71,9 @@ variable "vpc_id" {
 variable "label_orders" {
   type = object({
     cloudwatch = optional(list(string)),
-    ecs        = optional(list(string))
+    ecs        = optional(list(string)),
+    iam        = optional(list(string)),
+    vpc        = optional(list(string))
   })
   default     = {}
   description = "Overrides the `labels_order` for the different labels to modify ID elements appear in the `id`"
