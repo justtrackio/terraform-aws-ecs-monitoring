@@ -124,7 +124,7 @@ module "cadvisor_definition" {
     "--port=8001",
     "--store_container_labels=false",
     "--enable_load_reader=true",
-    "--whitelisted_container_labels=com.amazonaws.ecs.cluster,com.amazonaws.ecs.task-definition-family,com.amazonaws.ecs.container-name",
+    "--whitelisted_container_labels=com.amazonaws.ecs.cluster,com.amazonaws.ecs.task-definition-family,com.amazonaws.ecs.container-name,com.amazonaws.ecs.task-definition-version",
     "--docker_only=true",
     "--disable_metrics=advtcp,cpuset,cpu_topology,disk,hugetlb,memory_numa,process,referenced_memory,resctrl,sched,tcp,udp",
     "--housekeeping_interval=2s"
