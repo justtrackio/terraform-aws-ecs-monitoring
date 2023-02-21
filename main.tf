@@ -149,7 +149,7 @@ module "cadvisor_definition" {
 
 module "ecs_service_task" {
   source  = "justtrackio/ecs-alb-service-task/aws"
-  version = "1.0.0"
+  version = "1.1.0"
 
   container_definition_json = "[${module.node_exporter_definition.json_map_encoded},${module.cadvisor_definition.json_map_encoded}]"
   ecs_cluster_arn           = var.ecs_cluster_arn
