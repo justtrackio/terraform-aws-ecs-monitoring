@@ -17,10 +17,10 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_cadvisor_definition"></a> [cadvisor\_definition](#module\_cadvisor\_definition) | cloudposse/ecs-container-definition/aws | 0.58.1 |
-| <a name="module_cadvisor_label"></a> [cadvisor\_label](#module\_cadvisor\_label) | cloudposse/label/null | 0.25.0 |
+| <a name="module_cadvisor_label"></a> [cadvisor\_label](#module\_cadvisor\_label) | justtrackio/label/null | 0.26.0 |
 | <a name="module_ecs_service_task"></a> [ecs\_service\_task](#module\_ecs\_service\_task) | justtrackio/ecs-alb-service-task/aws | 1.0.0 |
 | <a name="module_node_exporter_definition"></a> [node\_exporter\_definition](#module\_node\_exporter\_definition) | cloudposse/ecs-container-definition/aws | 0.58.1 |
-| <a name="module_node_exporter_label"></a> [node\_exporter\_label](#module\_node\_exporter\_label) | cloudposse/label/null | 0.25.0 |
+| <a name="module_node_exporter_label"></a> [node\_exporter\_label](#module\_node\_exporter\_label) | justtrackio/label/null | 0.26.0 |
 | <a name="module_this"></a> [this](#module\_this) | justtrackio/label/null | 0.26.0 |
 
 ## Resources

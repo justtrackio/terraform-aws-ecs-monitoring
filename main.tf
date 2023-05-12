@@ -1,6 +1,6 @@
 module "cadvisor_label" {
-  source  = "cloudposse/label/null"
-  version = "0.25.0"
+  source  = "justtrackio/label/null"
+  version = "0.26.0"
 
   attributes  = ["cadvisor"]
   label_order = var.label_orders.cloudwatch
@@ -9,8 +9,8 @@ module "cadvisor_label" {
 }
 
 module "node_exporter_label" {
-  source  = "cloudposse/label/null"
-  version = "0.25.0"
+  source  = "justtrackio/label/null"
+  version = "0.26.0"
 
   attributes  = ["node-exporter"]
   label_order = var.label_orders.cloudwatch
