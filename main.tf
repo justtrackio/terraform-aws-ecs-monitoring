@@ -55,7 +55,7 @@ module "node_exporter_definition" {
     logDriver = "awslogs"
     options = {
       awslogs-group         = aws_cloudwatch_log_group.node_exporter.name
-      awslogs-region        = var.aws_region
+      awslogs-region        = module.this.aws_region
       awslogs-stream-prefix = "ecs"
     }
   }
@@ -141,7 +141,7 @@ module "cadvisor_definition" {
     logDriver = "awslogs"
     options = {
       awslogs-group         = aws_cloudwatch_log_group.cadvisor.name
-      awslogs-region        = var.aws_region
+      awslogs-region        = module.this.aws_region
       awslogs-stream-prefix = "ecs"
     }
   }
