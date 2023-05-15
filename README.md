@@ -4,24 +4,24 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.30.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.67 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.30.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.67 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_cadvisor_definition"></a> [cadvisor\_definition](#module\_cadvisor\_definition) | cloudposse/ecs-container-definition/aws | 0.58.1 |
-| <a name="module_cadvisor_label"></a> [cadvisor\_label](#module\_cadvisor\_label) | cloudposse/label/null | 0.25.0 |
+| <a name="module_cadvisor_label"></a> [cadvisor\_label](#module\_cadvisor\_label) | justtrackio/label/null | 0.26.0 |
 | <a name="module_ecs_service_task"></a> [ecs\_service\_task](#module\_ecs\_service\_task) | justtrackio/ecs-alb-service-task/aws | 1.0.0 |
 | <a name="module_node_exporter_definition"></a> [node\_exporter\_definition](#module\_node\_exporter\_definition) | cloudposse/ecs-container-definition/aws | 0.58.1 |
-| <a name="module_node_exporter_label"></a> [node\_exporter\_label](#module\_node\_exporter\_label) | cloudposse/label/null | 0.25.0 |
-| <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
+| <a name="module_node_exporter_label"></a> [node\_exporter\_label](#module\_node\_exporter\_label) | justtrackio/label/null | 0.26.0 |
+| <a name="module_this"></a> [this](#module\_this) | justtrackio/label/null | 0.26.0 |
 
 ## Resources
 
@@ -36,7 +36,8 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional key-value pairs to add to each map in `tags_as_list_of_maps`. Not added to `tags` or `id`.<br>This is for some rare cases where resources want additional configuration of tags<br>and therefore take a list of maps with tag key, value, and additional configuration. | `map(string)` | `{}` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br>in the order they appear in the list. New attributes are appended to the<br>end of the list. The elements of the list are joined by the `delimiter`<br>and treated as a single ID element. | `list(string)` | `[]` | no |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS Region | `string` | `null` | no |
+| <a name="input_aws_account_id"></a> [aws\_account\_id](#input\_aws\_account\_id) | AWS account id | `string` | `null` | no |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region | `string` | `null` | no |
 | <a name="input_cadvisor_cpu"></a> [cadvisor\_cpu](#input\_cadvisor\_cpu) | Number of CPU units to reserve for the container | `number` | `100` | no |
 | <a name="input_cadvisor_version"></a> [cadvisor\_version](#input\_cadvisor\_version) | cAdvisor version to be deployed | `string` | `"v0.47.0"` | no |
 | <a name="input_container_memory_reservation"></a> [container\_memory\_reservation](#input\_container\_memory\_reservation) | The amount of memory (in MiB) to reserve for the container. If container needs to exceed this threshold, it can do so up to the set container\_memory hard limit | `number` | `128` | no |
@@ -58,6 +59,7 @@
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | ID element. Usually an abbreviation of your organization name, e.g. 'eg' or 'cp', to help ensure generated IDs are globally unique | `string` | `null` | no |
 | <a name="input_node_exporter_cpu"></a> [node\_exporter\_cpu](#input\_node\_exporter\_cpu) | Number of CPU units to reserve for the container | `number` | `100` | no |
 | <a name="input_node_exporter_version"></a> [node\_exporter\_version](#input\_node\_exporter\_version) | Node exporter version to be deployed | `string` | `"v1.5.0"` | no |
+| <a name="input_organizational_unit"></a> [organizational\_unit](#input\_organizational\_unit) | Usually used to indicate the AWS organizational unit, e.g. 'prod', 'sdlc' | `string` | `null` | no |
 | <a name="input_regex_replace_chars"></a> [regex\_replace\_chars](#input\_regex\_replace\_chars) | Terraform regular expression (regex) string.<br>Characters matching the regex will be removed from the ID elements.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
 | <a name="input_stage"></a> [stage](#input\_stage) | ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release' | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Additional tags (e.g. `{'BusinessUnit': 'XYZ'}`).<br>Neither the tag keys nor the tag values will be modified by this module. | `map(string)` | `{}` | no |
