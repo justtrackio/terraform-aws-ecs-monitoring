@@ -1,3 +1,10 @@
+## [1.3.0](https://github.com/justtrackio/terraform-aws-ecs-monitoring/compare/v1.2.0...v1.3.0) (2024-02-21)
+
+
+### Features
+
+* allow ecs service changes (e.g. image updates) ([#39](https://github.com/justtrackio/terraform-aws-ecs-monitoring/issues/39)) ([5e4cde0](https://github.com/justtrackio/terraform-aws-ecs-monitoring/commit/5e4cde0f1ba46affa5a908fce8e615a78134ff5f))
+
 ## [1.2.0](https://github.com/justtrackio/terraform-aws-ecs-monitoring/compare/v1.1.0...v1.2.0) (2024-02-21)
 
 
