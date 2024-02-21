@@ -1,3 +1,10 @@
+## [1.2.0](https://github.com/justtrackio/terraform-aws-ecs-monitoring/compare/v1.1.0...v1.2.0) (2024-02-21)
+
+
+### Features
+
+* allow setting cadvisor and node-exporter image registry and repo ([#38](https://github.com/justtrackio/terraform-aws-ecs-monitoring/issues/38)) ([960bfcf](https://github.com/justtrackio/terraform-aws-ecs-monitoring/commit/960bfcf854f554f454a2cdf33bf100da5e97219f))
+
 ## [1.1.0](https://github.com/justtrackio/terraform-aws-ecs-monitoring/compare/v1.0.1...v1.1.0) (2023-05-15)
 
 
