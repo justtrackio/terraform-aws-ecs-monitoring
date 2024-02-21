@@ -4,6 +4,18 @@ variable "cadvisor_cpu" {
   default     = 100
 }
 
+variable "cadvisor_registry" {
+  type        = string
+  description = "cAdvisor registry to be used"
+  default     = "gcr.io"
+}
+
+variable "cadvisor_repository" {
+  type        = string
+  description = "cAdvisor repository to be used"
+  default     = "cadvisor/cadvisor"
+}
+
 variable "cadvisor_version" {
   type        = string
   description = "cAdvisor version to be deployed"
@@ -48,6 +60,18 @@ variable "node_exporter_cpu" {
   type        = number
   description = "Number of CPU units to reserve for the container"
   default     = 100
+}
+
+variable "node_exporter_registry" {
+  type        = string
+  description = "Node exporter registry to be used"
+  default     = "quay.io"
+}
+
+variable "node_exporter_repository" {
+  type        = string
+  description = "Node exporter repository to be used"
+  default     = "prometheus/node-exporter"
 }
 
 variable "node_exporter_version" {
