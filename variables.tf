@@ -39,6 +39,12 @@ variable "environment_variables" {
   default     = null
 }
 
+variable "ignore_changes_task_definition" {
+  type        = bool
+  description = "Whether to ignore changes in container definition and task definition in the ECS service"
+  default     = false
+}
+
 variable "label_orders" {
   type = object({
     cloudwatch = optional(list(string)),

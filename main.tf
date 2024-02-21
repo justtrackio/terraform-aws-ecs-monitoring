@@ -151,13 +151,14 @@ module "ecs_service_task" {
   source  = "justtrackio/ecs-alb-service-task/aws"
   version = "1.0.0"
 
-  container_definition_json = "[${module.node_exporter_definition.json_map_encoded},${module.cadvisor_definition.json_map_encoded}]"
-  ecs_cluster_arn           = var.ecs_cluster_arn
-  launch_type               = "EC2"
-  scheduling_strategy       = "DAEMON"
-  task_cpu                  = var.task_cpu
-  task_memory               = var.task_memory
-  network_mode              = "host"
+  container_definition_json      = "[${module.node_exporter_definition.json_map_encoded},${module.cadvisor_definition.json_map_encoded}]"
+  ecs_cluster_arn                = var.ecs_cluster_arn
+  ignore_changes_task_definition = var.ignore_changes_task_definition
+  launch_type                    = "EC2"
+  scheduling_strategy            = "DAEMON"
+  task_cpu                       = var.task_cpu
+  task_memory                    = var.task_memory
+  network_mode                   = "host"
   docker_volumes = [
     {
       host_path                   = "/"
