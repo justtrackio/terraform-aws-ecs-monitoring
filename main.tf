@@ -37,7 +37,7 @@ module "node_exporter_definition" {
   interactive              = false
   readonly_root_filesystem = true
   container_name           = "node-exporter"
-  container_image          = "quay.io/prometheus/node-exporter:${var.node_exporter_version}"
+  container_image          = "${var.node_exporter_registry}/${var.node_exporter_repository}:${var.node_exporter_version}"
   mount_points = [
     {
       containerPath = "/host"
@@ -68,7 +68,7 @@ module "cadvisor_definition" {
   interactive              = false
   readonly_root_filesystem = true
   container_name           = "cadvisor"
-  container_image          = "gcr.io/cadvisor/cadvisor:${var.cadvisor_version}"
+  container_image          = "${var.cadvisor_registry}/${var.cadvisor_repository}:${var.cadvisor_version}"
   mount_points = [
     {
       containerPath = "/sys/fs/cgroup"
