@@ -32,7 +32,7 @@ resource "aws_cloudwatch_log_group" "cadvisor" {
 
 module "node_exporter_definition" {
   source  = "cloudposse/ecs-container-definition/aws"
-  version = "0.58.1"
+  version = "0.61.2"
 
   interactive              = false
   readonly_root_filesystem = true
@@ -63,7 +63,7 @@ module "node_exporter_definition" {
 
 module "cadvisor_definition" {
   source  = "cloudposse/ecs-container-definition/aws"
-  version = "0.58.1"
+  version = "0.61.2"
 
   interactive              = false
   readonly_root_filesystem = true
